@@ -10,20 +10,32 @@ import { cn } from "@/lib/cn";
  */
 export function Slideshow({ interval = 3000, children }: { interval?: number; children: React.ReactNode }) {
   const slides = Children.toArray(children);
-  const [active, setActive] = useState(0);
+  // `previous` stays fully visible underneath while `active` fades in over it, so the
+  // background never shows through mid-swap.
+  const [{ active, previous }, setSlide] = useState({ active: 0, previous: -1 });
 
   useEffect(() => {
     if (slides.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setActive((i) => (i + 1) % slides.length), interval);
+    const id = setInterval(
+      () => setSlide(({ active }) => ({ active: (active + 1) % slides.length, previous: active })),
+      interval,
+    );
     return () => clearInterval(id);
   }, [slides.length, interval]);
 
   return (
-    <div className="absolute inset-0" aria-hidden>
+    <div className="absolute inset-0 isolate" aria-hidden>
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={cn("absolute inset-0 transition-opacity duration-1000 ease-in-out", i === active ? "opacity-100" : "opacity-0")}
+          className={cn(
+            "absolute inset-0",
+            i === active
+              ? "z-10 opacity-100 transition-opacity duration-1000 ease-in-out"
+              : i === previous
+                ? "opacity-100"
+                : "opacity-0",
+          )}
         >
           {slide}
         </div>

@@ -6,4 +6,7 @@ export default defineCliConfig({
     dataset: "production",
   },
   studioHost: "new-covenant-ikeja",
+  deployment: {
+    appId: "n5fn07s6jii75158fbpc6hep",
+  },
 });
