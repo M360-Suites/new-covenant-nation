@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import { cn } from "@/lib/cn";
 
+import { SelectControl } from "./select-control";
+
 /**
  * Field styles from the design:
  * - "square": Academy enrolment (square corners)
@@ -25,7 +27,30 @@ const labels: Record<FieldStyle, string> = {
   gray: "text-sm leading-5 font-medium text-[#374151]",
 };
 
-const focus = "w-full focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/15 aria-invalid:border-brand-red";
+/** Select trigger text before a choice is made, matching each look's input placeholder. */
+const placeholders: Record<FieldStyle, string> = {
+  square: "text-muted/70",
+  soft: "text-[#6b7280]",
+  slate: "text-[#94a3b8]",
+  gray: "text-[#6b7280]",
+};
+
+/** Dropdown card and option rows for the custom select. */
+const menus: Record<FieldStyle, string> = {
+  square: "w-full border-outline",
+  soft: "w-full rounded border-outline/50",
+  slate: "w-full rounded-lg border-[#cbd5e1]",
+  gray: "w-full rounded-lg border-[#d1d5db]",
+};
+
+const menuOptions: Record<FieldStyle, string> = {
+  square: "px-4 py-2.5 text-base leading-6 text-body",
+  soft: "px-3 py-2.5 text-base leading-6 text-body",
+  slate: "px-3.5 py-2 text-sm leading-5 text-[#1e293b]",
+  gray: "px-4 py-2 text-sm leading-5 text-[#1f2937]",
+};
+
+const focus ="w-full focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/15 aria-invalid:border-brand-red";
 
 type FieldProps = {
   label: string;
@@ -138,22 +163,18 @@ export function SelectField({
 
   return (
     <Field {...field}>
-      <div className="relative">
-        <select required={required} defaultValue="" className={cn(controls[look], focus, "appearance-none pr-11")} {...a11y(field.name, field.error)}>
-          <option value="" disabled>
-            {placeholder}
-          </option>
-          {options.map((option) => {
-            const { value, label } = typeof option === "string" ? { value: option, label: option } : option;
-            return (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            );
-          })}
-        </select>
-        <Image src={chevron.src} alt="" width={chevron.width} height={chevron.height} className={cn("pointer-events-none absolute", chevron.className)} />
-      </div>
+      <SelectControl
+        name={field.name}
+        error={field.error}
+        required={required}
+        placeholder={placeholder}
+        options={options.map((option) => (typeof option === "string" ? { value: option, label: option } : option))}
+        className={cn(controls[look], focus)}
+        placeholderClassName={placeholders[look]}
+        menuClassName={menus[look]}
+        optionClassName={menuOptions[look]}
+        chevron={chevron}
+      />
     </Field>
   );
 }

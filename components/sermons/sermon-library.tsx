@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
+import { SelectControl } from "@/components/forms/select-control";
 import type { SermonSummary } from "@/sanity/lib/queries";
 
 import { SermonCard } from "./sermon-card";
@@ -105,21 +106,17 @@ function FilterSelect({
   options: string[];
 }) {
   return (
-    <label className="relative">
-      <span className="sr-only">{label}</span>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="h-[38px] appearance-none rounded-full border border-outline bg-surface-bright py-2 pr-10 pl-4 text-sm leading-5 font-medium tracking-[0.01em] text-body focus:border-navy focus:outline-none"
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <Image src="/icons/sermons/chevron.svg" alt="" width={10} height={24} className="pointer-events-none absolute top-[7px] right-[14px]" />
-    </label>
+    <SelectControl
+      label={label}
+      value={value}
+      onValueChange={onChange}
+      placeholder={placeholder}
+      options={[{ value: "", label: placeholder }, ...options.map((option) => ({ value: option, label: option }))]}
+      className="h-[38px] rounded-full border border-outline bg-surface-bright py-2 pl-4 text-sm leading-5 font-medium tracking-[0.01em] whitespace-nowrap text-body focus:border-navy focus:outline-none"
+      placeholderClassName=""
+      menuClassName="w-max max-w-[min(18rem,calc(100vw-3rem))] rounded-xl border-outline"
+      optionClassName="px-4 py-2 text-sm leading-5 text-body"
+      chevron={{ src: "/icons/sermons/chevron.svg", width: 10, height: 10, className: "top-[16px] right-[14px]" }}
+    />
   );
 }
