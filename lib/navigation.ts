@@ -52,3 +52,8 @@ export const legalLinks: NavLink[] = [
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms and Conditions", href: "/terms" },
 ];
+
+/** True when `pathname` is `href` or a page beneath it. */
+export function isActivePath(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
