@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
-import type { NavItem } from "@/lib/navigation";
+import { isActivePath, type NavItem } from "@/lib/navigation";
 
 /**
  * Header menu with child links ("Resources"). Opens on hover or click, and closes when a
@@ -17,7 +17,7 @@ export function NavDropdown({ item, className }: { item: NavItem; className: str
   const ref = useRef<HTMLDivElement>(null);
   const menuId = useId();
   const pathname = usePathname();
-  const active = item.children?.some((child) => pathname.startsWith(child.href));
+  const active = item.children?.some((child) => isActivePath(pathname, child.href));
 
   useEffect(() => {
     if (!open) return;
@@ -66,7 +66,7 @@ export function NavDropdown({ item, className }: { item: NavItem; className: str
               <Link
                 href={child.href}
                 onClick={() => setOpen(false)}
-                aria-current={pathname.startsWith(child.href) ? "page" : undefined}
+                aria-current={isActivePath(pathname, child.href) ? "page" : undefined}
                 className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-navy/5 aria-[current=page]:bg-navy/5"
               >
                 {child.icon && (
