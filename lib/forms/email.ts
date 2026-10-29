@@ -1,7 +1,22 @@
 import "server-only";
 
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
 const apiKey = process.env.RESEND_API_KEY;
 const from = process.env.FORMS_EMAIL_FROM;
+
+// Sent as an inline attachment, since the site may not be publicly reachable to host it. Traced into the build in next.config.ts.
+const logo = readLogo();
+
+function readLogo() {
+  try {
+    return readFileSync(path.join(process.cwd(), "assets/email-logo.png")).toString("base64");
+  } catch (error) {
+    console.error("Email logo missing; sending emails without it", error);
+    return null;
+  }
+}
 
 type Fields = [label: string, value: string | undefined][];
 
@@ -99,6 +114,7 @@ async function send(message: { to: string[]; subject: string; replyTo?: string; 
         reply_to: message.replyTo,
         html: message.html,
         text: message.text,
+        attachments: logo ? [{ content: logo, filename: "logo.png", content_type: "image/png", content_id: "logo" }] : undefined,
       }),
     });
     if (!response.ok) {
@@ -178,8 +194,12 @@ function layout(heading: string, body: string, footer: string) {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;">
             <tr>
               <td style="background:#151a4b;padding:28px 32px;border-bottom:4px solid #cca830;">
-                <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#cca830;font-weight:700;">New Covenant Church, Ikeja</div>
-                <div style="font-size:24px;line-height:32px;color:#ffffff;font-weight:700;margin-top:8px;">${escape(heading)}</div>
+                ${
+                  logo
+                    ? `<img src="cid:logo" width="150" height="60" alt="New Covenant Church, Ikeja" style="display:block;border:0;width:150px;height:60px;" />`
+                    : `<div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#cca830;font-weight:700;">New Covenant Church, Ikeja</div>`
+                }
+                <div style="font-size:24px;line-height:32px;color:#ffffff;font-weight:700;margin-top:${logo ? 20 : 8}px;">${escape(heading)}</div>
               </td>
             </tr>
             <tr>

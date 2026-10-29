@@ -11,8 +11,8 @@ import type { FormState } from "@/lib/forms/submission";
 
 import { registerForEvent } from "./actions";
 
-export function RegisterForm({ eventId, eventTitle }: { eventId: string; eventTitle: string }) {
-  const [state, action] = useActionState<FormState, FormData>(registerForEvent.bind(null, eventId), { status: "idle" });
+export function RegisterForm({ eventSlug, eventTitle }: { eventSlug: string; eventTitle: string }) {
+  const [state, action] = useActionState<FormState, FormData>(registerForEvent.bind(null, eventSlug), { status: "idle" });
   const [dismissed, setDismissed] = useState<FormState | null>(null);
   const errors = state.errors ?? {};
   const failed = state.status === "error" && !state.errors && dismissed !== state;

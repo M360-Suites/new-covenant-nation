@@ -35,6 +35,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | `FORMS_EMAIL_TO`                  | Default inbox(es) for form notifications, comma-separated                                   |
 | `TESTIMONY_EMAIL_TO`              | Overrides `FORMS_EMAIL_TO` for testimony submissions                                        |
 | `ACADEMY_EMAIL_TO`                | Overrides `FORMS_EMAIL_TO` for academy enrolments                                           |
+| `CONNECT_EMAIL_TO`                | Overrides `FORMS_EMAIL_TO` for connect form submissions                                     |
+| `PRAYER_EMAIL_TO`                 | Overrides `FORMS_EMAIL_TO` for prayer requests                                              |
+| `EVENTS_EMAIL_TO`                 | Overrides `FORMS_EMAIL_TO` for event registrations                                          |
 
 ## Project structure
 

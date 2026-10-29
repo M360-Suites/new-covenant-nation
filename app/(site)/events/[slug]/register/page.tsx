@@ -75,7 +75,7 @@ export default async function RegisterPage({ params }: PageProps<"/events/[slug]
               <h2 className="text-2xl leading-8 font-semibold text-navy">Secure Your Seat</h2>
               <p className="pt-1 leading-6 text-muted">Please provide your details below to register.</p>
             </div>
-            <RegisterForm eventId={event._id} eventTitle={event.title} />
+            <RegisterForm eventSlug={event.slug} eventTitle={event.title} />
           </section>
         </div>
       </Container>
