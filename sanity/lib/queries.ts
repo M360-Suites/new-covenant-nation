@@ -348,14 +348,6 @@ export const ONLINE_CHURCH_PAGE_QUERY = defineQuery(`*[_type == "onlineChurchPag
   departments
 }`);
 
-export const CHAT_MESSAGES_QUERY = defineQuery(`*[_type == "chatMessage" && defined(postedAt)] | order(postedAt desc)[0...50]{
-  _id,
-  name,
-  text,
-  moderator,
-  postedAt
-}`);
-
 export type OnlineChurchPageData = {
   isLive: boolean | null;
   streamUrl: string | null;
@@ -372,8 +364,6 @@ export type OnlineChurchPageData = {
   connectImage: SanityImage | null;
   departments: string[] | null;
 };
-
-export type ChatMessage = { _id: string; name: string; text: string; moderator: boolean | null; postedAt: string };
 
 const eventCard = /* groq */ `
   _id,

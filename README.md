@@ -45,7 +45,6 @@ Open [http://localhost:3000](http://localhost:3000).
 app/(site)/        Pages: home, who we are, connect, events, give, online church,
                    testimony, resources (academy, publications, sermons)
 app/api/revalidate Sanity webhook endpoint (on-demand cache revalidation)
-app/api/chat       Online Church chat messages (polled, uncached)
 components/        UI components, grouped by page/section
 lib/forms/         Form submission helpers (save to Sanity + email via Resend)
 sanity/            Sanity client, queries and env config used by the site

@@ -16,7 +16,7 @@ export function TestimonySection({ image, videoUrl }: { image: SanityImage | nul
         aria-label="Watch a testimony"
         className="relative block h-[320px] overflow-hidden rounded-xl border-2 border-gold bg-navy shadow-card sm:h-[400px]"
       >
-        <CmsImage image={image} alt="" sizes="(min-width: 1024px) 568px, 100vw" />
+        <CmsImage image={image} alt="" sizes="(min-width: 1024px) 568px, 100vw" className="object-cover object-top" />
       </Link>
 
       <div className="flex flex-col items-start">

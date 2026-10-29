@@ -59,6 +59,7 @@ export function WelcomeSection({ content }: { content: WelcomeContent }) {
           image={content.welcomeImage}
           alt="Worship at New Covenant Church, Ikeja"
           sizes="(min-width: 1024px) 568px, 100vw"
+          className="object-cover object-top"
         />
         {(content.welcomeImageCaption || content.welcomeImageSubcaption) && (
           <figcaption className="absolute inset-x-0 bottom-0 border-t border-outline/20 bg-[#fafaf8]/80 p-8 backdrop-blur-[6px]">

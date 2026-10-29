@@ -1,14 +1,6 @@
 "use server";
 
-import { deliverSubmission, isSpam, readFields, saveSubmission, type FormState } from "@/lib/forms/submission";
-
-export async function postChatMessage(name: string, text: string): Promise<FormState> {
-  const cleanName = name.trim().slice(0, 40);
-  const cleanText = text.trim().slice(0, 500);
-  if (!cleanName || !cleanText) return { status: "error", message: "Please enter your name and a message." };
-
-  return saveSubmission({ _type: "chatMessage", name: cleanName, text: cleanText, moderator: false, postedAt: new Date().toISOString() });
-}
+import { deliverSubmission, isSpam, readFields, type FormState } from "@/lib/forms/submission";
 
 export async function submitPrayer(_prev: FormState, formData: FormData): Promise<FormState> {
   if (isSpam(formData)) return { status: "success" };

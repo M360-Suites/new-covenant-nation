@@ -23,7 +23,7 @@ export function SermonHighlight({ image, href }: { image: SanityImage | null; hr
 
       <div className="relative min-h-[320px] flex-1 bg-ink">
         {/* object-center! overrides the Sanity hotspot so the photo always sits centred */}
-        <CmsImage image={image} alt="" sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover object-center!" />
+        <CmsImage image={image} alt="" sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover object-top!" />
         <div className="absolute inset-0 bg-black/40" />
       </div>
     </Link>

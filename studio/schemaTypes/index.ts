@@ -1,6 +1,5 @@
 import { academyCourse } from "./documents/academy-course";
 import { academyPage } from "./documents/academy-page";
-import { chatMessage } from "./documents/chat-message";
 import { connectSubmission } from "./documents/connect-submission";
 import { enrolment } from "./documents/enrolment";
 import { onlineChurchPage } from "./documents/online-church-page";
@@ -35,7 +34,6 @@ export const schemaTypes = [
   sermon,
   publication,
   academyCourse,
-  chatMessage,
   // Form submissions
   enrolment,
   prayerRequest,
