@@ -14,14 +14,9 @@ export function TestimonySection({ image, videoUrl }: { image: SanityImage | nul
       <Link
         href={videoUrl ?? "/testimony"}
         aria-label="Watch a testimony"
-        className="group relative block h-[320px] overflow-hidden rounded-xl border-2 border-gold bg-navy shadow-card sm:h-[400px]"
+        className="relative block h-[320px] overflow-hidden rounded-xl border-2 border-gold bg-navy shadow-card sm:h-[400px]"
       >
         <CmsImage image={image} alt="" sizes="(min-width: 1024px) 568px, 100vw" />
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="flex h-10 w-16 items-center justify-center rounded-xl bg-[#f00] shadow-[0_10px_15px_-3px_rgb(0_0_0/0.1),0_4px_6px_-4px_rgb(0_0_0/0.1)] transition-transform group-hover:scale-110">
-            <Image src="/icons/play.svg" alt="" width={16.5} height={21} />
-          </span>
-        </span>
       </Link>
 
       <div className="flex flex-col items-start">

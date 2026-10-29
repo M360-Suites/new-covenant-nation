@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { mainNav, partnerLink } from "@/lib/navigation";
@@ -8,6 +6,7 @@ import { HeaderShell } from "./header-shell";
 import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
 import { NavDropdown } from "./nav-dropdown";
+import { HeaderNavLink } from "./nav-link";
 
 const navLinkClass =
   "block w-[120px] p-1 text-center text-sm leading-5 font-medium tracking-[0.01em] text-white/90 transition-colors hover:text-gold";
@@ -26,9 +25,7 @@ export function SiteHeader() {
                 {item.children ? (
                   <NavDropdown item={item} className={navLinkClass} />
                 ) : (
-                  <Link href={item.href} className={navLinkClass}>
-                    {item.label}
-                  </Link>
+                  <HeaderNavLink link={item} className={navLinkClass} />
                 )}
               </li>
             ))}

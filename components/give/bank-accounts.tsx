@@ -1,20 +1,9 @@
 import Image from "next/image";
 
-import { cn } from "@/lib/cn";
 import type { BankAccount } from "@/sanity/lib/queries";
 
 import { CopyButton } from "./copy-button";
-
-function NigeriaFlag({ size = "md" }: { size?: "sm" | "md" }) {
-  const bar = cn(size === "sm" ? "h-3 w-4" : "h-4 w-6");
-  return (
-    <span className="flex gap-1" role="img" aria-label="Nigeria">
-      <span className={cn(bar, "bg-flag-green")} />
-      <span className={cn(bar, "bg-white")} />
-      <span className={cn(bar, "bg-flag-green")} />
-    </span>
-  );
-}
+import { Flag } from "./flag";
 
 /** Highlighted bank (Fidelity in the design) with its accounts in a 2-column grid. */
 export function FeaturedBankCard({ name, accounts }: { name: string; accounts: BankAccount[] }) {
@@ -32,7 +21,7 @@ export function FeaturedBankCard({ name, accounts }: { name: string; accounts: B
             {name}
           </h2>
         </div>
-        <NigeriaFlag />
+        <Flag code="ng" />
       </header>
 
       <ul className="grid gap-4 sm:grid-cols-2">
@@ -77,7 +66,7 @@ export function AccountListCard({
             {title}
           </h2>
         </div>
-        <NigeriaFlag size="sm" />
+        <Flag code="ng" size="sm" />
       </header>
 
       {accounts.length > 0 ? (

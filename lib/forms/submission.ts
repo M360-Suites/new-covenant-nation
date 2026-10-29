@@ -2,6 +2,8 @@ import "server-only";
 
 import { writeClient } from "@/sanity/lib/write-client";
 
+import { sendSubmissionEmail, type SubmissionEmail } from "./email";
+
 export type FormState = { status: "idle" | "success" | "error"; message?: string; errors?: Record<string, string> };
 
 export const initialFormState: FormState = { status: "idle" };
@@ -45,4 +47,16 @@ export async function saveSubmission(doc: { _type: string } & Record<string, unk
     console.error("Failed to save form submission", error);
     return { status: "error", message: "Something went wrong while sending your form. Please try again." };
   }
+}
+
+/**
+ * Saves the submission to Sanity and emails it to the team at the same time.
+ * Counts as sent if either one gets through, so a Sanity or Resend outage alone doesn't lose it.
+ */
+export async function deliverSubmission(
+  doc: { _type: string } & Record<string, unknown>,
+  email: SubmissionEmail,
+): Promise<FormState> {
+  const [saved, sent] = await Promise.all([saveSubmission(doc), sendSubmissionEmail(email)]);
+  return sent ? { status: "success" } : saved;
 }

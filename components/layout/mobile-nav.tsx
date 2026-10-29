@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { buttonClasses } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
-import type { NavItem, NavLink } from "@/lib/navigation";
+import { isActivePath, type NavItem, type NavLink } from "@/lib/navigation";
 
 /** Per-row delay (ms) for the stagger in, and the quicker reverse stagger out. */
 const STAGGER_IN = 45;
@@ -30,6 +31,7 @@ function toRows(links: NavItem[]): Row[] {
 
 export function MobileNav({ links, cta }: { links: NavItem[]; cta: NavLink }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const close = () => setOpen(false);
 
   const rows = toRows(links);
@@ -97,12 +99,18 @@ export function MobileNav({ links, cta }: { links: NavItem[]; cta: NavLink }) {
                 <Link
                   href={row.href}
                   onClick={close}
-                  className="block border-l border-white/15 py-2 pl-4 text-sm font-medium text-white/90 hover:text-gold"
+                  aria-current={isActivePath(pathname, row.href) ? "page" : undefined}
+                  className="block border-l border-white/15 py-2 pl-4 text-sm font-medium text-white/90 hover:text-gold aria-[current=page]:border-gold aria-[current=page]:text-gold"
                 >
                   {row.label}
                 </Link>
               ) : (
-                <Link href={row.href} onClick={close} className="block py-3 text-base font-medium text-white/90 hover:text-gold">
+                <Link
+                  href={row.href}
+                  onClick={close}
+                  aria-current={isActivePath(pathname, row.href) ? "page" : undefined}
+                  className="block py-3 text-base font-medium text-white/90 hover:text-gold aria-[current=page]:text-gold"
+                >
                   {row.label}
                 </Link>
               )}
