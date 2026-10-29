@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# New Covenant Church Ikeja — Website
 
-## Getting Started
+The church website, built with [Next.js](https://nextjs.org) 16 (App Router), React 19 and Tailwind CSS 4. Content is managed in [Sanity](https://www.sanity.io); the Studio lives in `studio/`.
 
-First, run the development server:
+## Getting started
+
+Requires Node.js 20+ and [pnpm](https://pnpm.io).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local   # then fill in the values below
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script       | What it does                  |
+| ------------ | ----------------------------- |
+| `pnpm dev`   | Start the dev server          |
+| `pnpm build` | Production build              |
+| `pnpm start` | Serve the production build    |
+| `pnpm lint`  | Run ESLint                    |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+| Variable                          | Purpose                                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`   | Sanity project ID (`nxf9dblv`)                                                              |
+| `NEXT_PUBLIC_SANITY_DATASET`      | Sanity dataset, defaults to `production`                                                    |
+| `NEXT_PUBLIC_SANITY_API_VERSION`  | Sanity API version, defaults to `2026-10-01`                                                |
+| `SANITY_REVALIDATE_SECRET`        | Shared secret for the Sanity webhook that refreshes cached content                          |
+| `SANITY_API_WRITE_TOKEN`          | Sanity token with write access, used to save form submissions                               |
+| `RESEND_API_KEY`                  | [Resend](https://resend.com) API key for form notification emails                           |
+| `FORMS_EMAIL_FROM`                | Sender address, e.g. `New Covenant Church <forms@yourdomain.org>` — domain must be verified in Resend |
+| `FORMS_EMAIL_TO`                  | Default inbox(es) for form notifications, comma-separated                                   |
+| `TESTIMONY_EMAIL_TO`              | Overrides `FORMS_EMAIL_TO` for testimony submissions                                        |
+| `ACADEMY_EMAIL_TO`                | Overrides `FORMS_EMAIL_TO` for academy enrolments                                           |
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/(site)/        Pages: home, who we are, connect, events, give, online church,
+                   testimony, resources (academy, publications, sermons)
+app/api/revalidate Sanity webhook endpoint (on-demand cache revalidation)
+app/api/chat       Online Church chat messages (polled, uncached)
+components/        UI components, grouped by page/section
+lib/forms/         Form submission helpers (save to Sanity + email via Resend)
+sanity/            Sanity client, queries and env config used by the site
+studio/            Sanity Studio (schemas, desk structure)
+public/            Static assets (icons, flags, images)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Content and caching
 
-## Deploy on Vercel
+Pages fetch content from Sanity with cache tags based on document type (and slug). Set up a GROQ webhook in Sanity pointing to `https://<your-domain>/api/revalidate` with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Trigger on:** create, update, delete
+- **Projection:** `{ _type, "slug": slug.current }`
+- **Secret:** the same value as `SANITY_REVALIDATE_SECRET`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Published changes then show up on the site without a redeploy.
+
+## Forms
+
+Connect, prayer requests, event registration, testimonies and academy enrolment are handled by server actions. Each submission is saved to Sanity, and testimonies and academy enrolments are also emailed to the team (with a confirmation email to the sender). A submission counts as sent if either the save or the email succeeds.
+
+## Sanity Studio
+
+```bash
+cd studio
+pnpm install
+pnpm dev             # local Studio at http://localhost:3333
+pnpm deploy          # deploy to https://new-covenant-ikeja.sanity.studio
+pnpm schema:deploy   # deploy the schema only
+```
+
+## Deployment
+
+Deploy the Next.js app to any host that supports Next.js (e.g. Vercel) and set the environment variables above. Add the site's domain to the Sanity project's CORS origins if the browser needs to talk to Sanity directly.
