@@ -26,7 +26,7 @@ export default async function ConnectPage() {
         </div>
       </section>
 
-      <section className="relative mx-4 -mt-14 max-w-[960px] overflow-hidden rounded-2xl border border-[#f1f5f9] bg-white shadow-[0_8px_10px_rgb(0_0_0/0.1),0_20px_25px_rgb(0_0_0/0.1)] lg:mx-auto">
+      <section className="relative mx-4 -mt-14 max-w-[960px] rounded-2xl border border-[#f1f5f9] bg-white shadow-[0_8px_10px_rgb(0_0_0/0.1),0_20px_25px_rgb(0_0_0/0.1)] lg:mx-auto">
         <ConnectForm departments={page?.departments ?? []} />
       </section>
     </div>
